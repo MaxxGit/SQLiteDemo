@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let directoryPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first as? String {
+        if let directoryPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first {
             let dbPath = "\(directoryPath)/example.db"
             
             if sqlite3_open(dbPath, &db) == SQLITE_OK {
-                println("Database created/opened with success")
+                print("Database created/opened with success")
             } else {
-                println("Failed to create/open the database")
+                print("Failed to create/open the database")
             }
         }
         
@@ -38,9 +38,9 @@ class ViewController: UIViewController {
         var error : UnsafeMutablePointer<CChar> = nil
         let createTableSQL = "create table Discipline (code integer primary key autoincrement, name text, credits integer)"
         if sqlite3_exec(db, createTableSQL, nil, nil, &error) == SQLITE_OK {
-            println("Discipline table created with success!")
+            print("Discipline table created with success!")
         } else {
-            println("An error has occurred when creating the table Discipline: \(String.fromCString(error))")
+            print("An error has occurred when creating the table Discipline: \(String.fromCString(error))")
         }
     }
 
@@ -50,9 +50,9 @@ class ViewController: UIViewController {
         var error : UnsafeMutablePointer<CChar> = nil
         let removeTableSQL = "drop table Discipline"
         if sqlite3_exec(db, removeTableSQL, nil, nil, &error) == SQLITE_OK {
-            println("Discipline table removed with success!")
+            print("Discipline table removed with success!")
         } else {
-            println("An error has occurred when removing the table Discipline: \(String.fromCString(error))")
+            print("An error has occurred when removing the table Discipline: \(String.fromCString(error))")
         }
     }
     
@@ -63,9 +63,9 @@ class ViewController: UIViewController {
         let insertElementSQL = "insert into Discipline (name) values (\"Calculus I\")"
         sqlite3_prepare(db, insertElementSQL, -1, &statement, nil)
         if sqlite3_step(statement) == SQLITE_DONE {
-            println("Discipline Calculus I inserted with success")
+            print("Discipline Calculus I inserted with success")
         } else {
-            println("Fail to insert Calculus I discipline")
+            print("Fail to insert Calculus I discipline")
         }
         
         sqlite3_finalize(statement)
@@ -78,9 +78,9 @@ class ViewController: UIViewController {
         let updateElementSQL = "update Discipline set name = \"Calculus II\", credits = 4 where name = \"Calculus I\""
         sqlite3_prepare(db, updateElementSQL, -1, &statement, nil)
         if sqlite3_step(statement) == SQLITE_DONE {
-            println("Discipline updated with success!")
+            print("Discipline updated with success!")
         } else {
-            println("Fail to update discipline")
+            print("Fail to update discipline")
         }
         sqlite3_finalize(statement)
     }
@@ -92,9 +92,9 @@ class ViewController: UIViewController {
         let updateElementSQL = "delete from Discipline where name = \"Calculus II\""
         sqlite3_prepare(db, updateElementSQL, -1, &statement, nil)
         if sqlite3_step(statement) == SQLITE_DONE {
-            println("Discipline removed with success")
+            print("Discipline removed with success")
         } else {
-            println("Fail to remove discipline")
+            print("Fail to remove discipline")
         }
         sqlite3_finalize(statement)
     }
@@ -116,12 +116,12 @@ class ViewController: UIViewController {
         }
         sqlite3_finalize(statement)
         
-        println(elements)
+        print(elements)
     }
     
     @IBAction func didTouchCloseBtn(sender: AnyObject) {
         sqlite3_close(db)
-        println("Conection closed with success!")
+        print("Conection closed with success!")
     }
     
 }
